@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "packageManager": "pnpm@8.9.2",
+  "scripts": {
+    "start": "node --enable-source-maps build/index.js",
+    "watch": "tsc -w",
+    "build": "tsc",
+    "dev": "tsc-watch --onSuccess \"pnpm start\"",
+    "plop": "plop --plopfile ./plopfile.mjs",
+    "db:cli": "typeorm-ts-node-commonjs -d ./src/db/data-source.ts"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.13",
+    "snowyflake": "^2.0.0",
+    "typeorm": "^0.3.17"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.9",
+    "plop": "^4.0.0",
+    "tsc-watch": "^6.0.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}

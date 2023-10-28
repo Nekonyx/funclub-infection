@@ -1,0 +1,88 @@
+import {
+  FindManyOptions,
+  FindOneOptions,
+  FindOptionsWhere,
+  DeepPartial
+} from 'typeorm'
+
+import { {{pascalCase name}}, getRepo } from '../db'
+
+interface IConditions {
+  id?: string
+  conditions?: FindOptionsWhere<{{pascalCase name}}>
+}
+
+export interface IGet{{pascalCase name}}Params extends IConditions {
+  opts?: FindOneOptions<{{pascalCase name}}>
+}
+
+export interface IGet{{pascalCase name}}ListParams extends IConditions {
+  opts?: FindManyOptions<{{pascalCase name}}>
+}
+
+export interface ICreate{{pascalCase name}}Params {
+  //
+}
+
+export interface IUpdate{{pascalCase name}}Params {
+  id: string
+  data: DeepPartial<{{pascalCase name}}>
+}
+
+export interface IDelete{{pascalCase name}}Params {
+  id: string
+}
+
+export class {{pascalCase name}}Service {
+  private readonly repo = getRepo({{pascalCase name}})
+
+  public async getOne(params: IGet{{pascalCase name}}Params = {}): Promise<{{pascalCase name}} | null> {
+    return this.repo.findOne({
+      where: this.makeConditions(params),
+      ...params.opts
+    })
+  }
+
+  public async getList(params: IGet{{pascalCase name}}ListParams = {}): Promise<{{pascalCase name}}[]> {
+    return this.repo.find({
+      where: this.makeConditions(params),
+      ...params.opts
+    })
+  }
+
+  public async create(params: ICreate{{pascalCase name}}Params): Promise<{{pascalCase name}}> {
+    const entity = this.repo.create({
+      //
+    })
+
+    await this.repo.insert(entity)
+
+    return entity
+  }
+
+  public async update(params: IUpdate{{pascalCase name}}Params): Promise<{{pascalCase name}}> {
+    const entity = {
+      ...params.data
+    }
+
+    await this.repo.update(params.id, entity)
+
+    return entity as {{pascalCase name}}
+  }
+
+  public async delete(params: IDelete{{pascalCase name}}Params): Promise<boolean> {
+    const result = await this.repo.softDelete(params.id)
+
+    return Boolean(result.affected)
+  }
+
+  private makeConditions(params: IConditions): FindOptionsWhere<{{pascalCase name}}> {
+    const conditions = params.conditions || {}
+
+    if (typeof params.id !== 'undefined') {
+      conditions.id = params.id
+    }
+
+    return conditions
+  }
+}
