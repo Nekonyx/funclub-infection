@@ -1,3 +1,7 @@
 /node_modules/
 /build/
 /.env
+/data/**/*
+!/data/.gitkeep
+!/data/certificates/
+!/data/certificates/.gitkeep

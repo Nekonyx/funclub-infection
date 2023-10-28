@@ -1,0 +1,4 @@
+{
+  "name": "funclub-infection",
+  "script": "./build/index.js"
+}

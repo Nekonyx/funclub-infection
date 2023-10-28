@@ -1,1 +1,45 @@
-### my minimal setup for almost any typescript application
+## FUNCLUB INFECTION
+
+Мини-ивент на сервере с распространением заразного вируса
+
+### Установка
+
+### 1. Создание ролей и каналов
+
+Для работы необходимо создать 3 роли и 1 канал:
+
+- Роль мед. персонала (`NURSE_ROLE_ID`)
+- Роль изолированного (`QUARANTINE_ROLE_ID`)
+- Роль инфицированного (`INFECTED_ROLE_ID`)
+- Канал с карантином (`QUARANTINE_CHANNEL_ID`)
+
+### 2. Настройка бота
+
+1. Создайте и заполните `.env` по примеру из `.env.example`
+2. Установите Node.js
+3. Установите зависимости
+
+```sh
+# Установит pnpm
+$ corepack enable
+# Установит все зависимости
+$ pnpm install
+```
+
+4. Соберите бота
+
+```sh
+pnpm build
+```
+
+5. Инициализируйте базу данных
+
+```sh
+pnpm db:cli schema:sync
+```
+
+### Запуск
+
+```
+pnpm start
+```

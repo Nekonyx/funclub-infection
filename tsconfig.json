@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "outDir": "build",
     "strict": true,
     "target": "es2022",
     "module": "commonjs",
@@ -14,5 +15,5 @@
   "ts-node": {
     "transpileOnly": true
   },
-  "include": ["src"]
+  "include": ["types", "src"]
 }

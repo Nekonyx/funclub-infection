@@ -10,15 +10,24 @@
     "db:cli": "typeorm-ts-node-commonjs -d ./src/db/data-source.ts"
   },
   "dependencies": {
+    "@discordx/importer": "^1.2.3",
+    "common-tags": "^1.8.2",
+    "cron": "^3.1.5",
+    "discord.js": "^14.13.0",
+    "discordx": "^11.7.6",
+    "dotenv": "^16.3.1",
+    "musicard": "^1.5.2",
     "reflect-metadata": "^0.1.13",
     "snowyflake": "^2.0.0",
     "typeorm": "^0.3.17"
   },
   "devDependencies": {
+    "@types/common-tags": "^1.8.3",
     "@types/node": "^20.8.9",
     "plop": "^4.0.0",
-    "tsc-watch": "^6.0.4",
     "ts-node": "^10.9.1",
+    "tsc-watch": "^6.0.4",
+    "typed-emitter": "^2.1.0",
     "typescript": "^5.2.2"
   }
 }
