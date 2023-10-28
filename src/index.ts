@@ -1,9 +1,13 @@
+import 'dotenv/config'
+
+import { CronJob } from 'cron'
 import { resolve } from 'path'
 
 import { importx } from '@discordx/importer'
 
 import { bot } from './bot'
 import { dataSource } from './db'
+import { Jobs } from './jobs'
 
 run()
   .then(() => {
@@ -29,14 +33,16 @@ async function run() {
 
   console.log('initializing application commands...')
   await bot.initApplicationCommands()
+
+  console.log('initializing jobs...')
+  const jobs = new Jobs()
+  jobs.init()
 }
 
 process.on('uncaughtException', (error) => {
   console.error('uncaught exception:', error)
-  process.exit(1)
 })
 
 process.on('unhandledRejection', (error) => {
   console.error('unhandled rejection:', error)
-  process.exit(1)
 })

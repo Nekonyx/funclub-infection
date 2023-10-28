@@ -34,31 +34,36 @@ export class InfectionWatcher {
       return
     }
 
-    const citizen = await this.citizenService.getOne({
+    const attackerCitizen = await this.citizenService.getOne({
       serverId: server.id,
       userId: message.author.id
     })
 
-    if (!citizen) {
-      throw new Error('Citizen not found')
+    if (!attackerCitizen) {
+      throw new Error('Attacker citizen not found')
     }
 
-    const victim = await this.getVictim(message.channel as TextChannel)
+    const victim = await this.getVictimMember(message.channel as TextChannel)
 
-    if (!victim) {
+    if (!victim || victim.user.bot) {
+      return
+    }
+
+    // Цель в карантине
+    if (victim.roles.cache.has(server.quarantineRoleId!)) {
       return
     }
 
     const victimCitizen = await this.citizenService.getOne({
       serverId: server.id,
-      userId: victim?.id
+      userId: victim.id
     })
 
     if (!victimCitizen) {
       throw new Error('Victim citizen not found')
     }
 
-    if (citizen.status !== CitizenStatus.Infected) {
+    if (attackerCitizen.status !== CitizenStatus.Infected) {
       return
     }
 
@@ -71,7 +76,8 @@ export class InfectionWatcher {
       return
     }
 
-    await this.citizenService.markInfected(citizen, true)
+    console.log('pull the devil trigger')
+    await this.citizenService.markInfected(victimCitizen, true)
   }
 
   @On({
@@ -110,14 +116,16 @@ export class InfectionWatcher {
     await this.citizenService.markInfected(citizen, true)
   }
 
-  private async getVictim(channel: TextChannel): Promise<GuildMember | null> {
+  private async getVictimMember(
+    channel: TextChannel
+  ): Promise<GuildMember | null> {
     const messages = await channel.messages.fetch({
       limit: 2
     })
 
     const message = messages
       .sort((a, b) => a.createdTimestamp - b.createdTimestamp)
-      .last()
+      .first()
 
     if (!message) {
       return null

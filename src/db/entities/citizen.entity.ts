@@ -24,7 +24,7 @@ export class Citizen extends EntityBase {
 
   /** Страна проживания */
   @Index()
-  @Column('char', {
+  @Column('varchar', {
     length: 2
   })
   public country!: Country

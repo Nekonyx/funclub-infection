@@ -84,17 +84,29 @@ export class CitizenService {
     return this.create(params.creationParams)
   }
 
-  public async markInfected(citizen: Citizen, notify: boolean = true): Promise<void> {
+  public async markInfected(
+    citizen: Citizen,
+    notify: boolean = true
+  ): Promise<void> {
+    console.log(`${citizen.id} has been infected`)
     await this.updateStatus(citizen, CitizenStatus.Infected)
     citizenEvents.emit('infected', citizen, notify)
   }
 
-  public async markRecovered(citizen: Citizen, notify: boolean = true): Promise<void> {
+  public async markRecovered(
+    citizen: Citizen,
+    notify: boolean = true
+  ): Promise<void> {
+    console.log(`${citizen.id} has recovered`)
     await this.updateStatus(citizen, CitizenStatus.Recovered)
     citizenEvents.emit('recovered', citizen, notify)
   }
 
-  public async markDead(citizen: Citizen, notify: boolean = true): Promise<void> {
+  public async markDead(
+    citizen: Citizen,
+    notify: boolean = true
+  ): Promise<void> {
+    console.log(`${citizen.id} has died`)
     await this.updateStatus(citizen, CitizenStatus.Dead)
     citizenEvents.emit('died', citizen, notify)
   }

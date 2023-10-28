@@ -19,7 +19,7 @@ export class Server extends EntityBase {
 
   /** Кол-во препаратов */
   @Index()
-  @Column('number', {
+  @Column('integer', {
     default: 5
   })
   public drugsCount!: number

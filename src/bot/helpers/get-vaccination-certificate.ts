@@ -1,14 +1,14 @@
+import { createHash } from 'crypto'
 import { existsSync } from 'fs'
 import { readFile, writeFile } from 'fs/promises'
 import { musicCard as CardImage } from 'musicard'
 import { resolve } from 'path'
 
-import { Color } from '../../constants'
-
 const certificatesDir = resolve(process.cwd(), './data/certificates')
 
 export interface IGetVaccinationCertificateParams {
   id: string
+  isDead: boolean
   username: string
   avatarUrl: string
 }
@@ -16,19 +16,23 @@ export interface IGetVaccinationCertificateParams {
 export async function getVaccinationCertificate(
   params: IGetVaccinationCertificateParams
 ): Promise<Buffer> {
-  const path = resolve(certificatesDir, `${params.id}.png`)
+  const hash = createHash('md5')
+    .update(params.username + params.avatarUrl)
+    .digest('hex')
+
+  const path = resolve(certificatesDir, `${params.id}-${hash}.png`)
 
   if (existsSync(path)) {
     return readFile(path)
   }
 
   const card = new CardImage({
-    author: 'Справка о вакцинации',
+    author: params.isDead ? 'Умер' : 'Вакцинирован',
     name: params.username,
-    color: 'auto',
+    color: '#28aef4',
     thumbnail: params.avatarUrl,
-    brightness: 50,
-    progress: 100,
+    brightness: 100,
+    progress: 50,
     theme: 'dynamic'
   })
 

@@ -7,7 +7,7 @@ import {
 } from 'discord.js'
 import { Discord, Slash, SlashOption } from 'discordx'
 
-import { Color, VACCINATION_TIME } from '../../constants'
+import { CitizenStatus, Color, VACCINATION_TIME } from '../../constants'
 import { CitizenVaccinationService } from '../../services/citizen-vaccination.service'
 import { CitizenService } from '../../services/citizen.service'
 import { ServerService } from '../../services/server.service'
@@ -28,12 +28,13 @@ export class VaccinationCommand {
     @SlashOption({
       type: ApplicationCommandOptionType.User,
       name: 'гражданин',
-      description: 'Гражданин, которого нужно вакцинировать'
+      description: 'Гражданин, которого нужно вакцинировать',
+      required: true
     })
     target: GuildMember,
     interaction: CommandInteraction
   ) {
-    const caller = await interaction.guild?.members.fetch(interaction.user.id)
+    const caller = await interaction.guild!.members.fetch(interaction.user.id)
 
     if (!caller) {
       return
@@ -48,8 +49,15 @@ export class VaccinationCommand {
     }
 
     if (!caller.roles.cache.has(server.nurseRoleId!)) {
-      await interaction.followUp({
+      return interaction.reply({
         content: 'Вы не имеете права вакцинировать граждан',
+        ephemeral: true
+      })
+    }
+
+    if (target.user.bot) {
+      return interaction.reply({
+        content: 'Вы не можете вакцинировать бота',
         ephemeral: true
       })
     }
@@ -168,7 +176,8 @@ export class VaccinationCommand {
     @SlashOption({
       type: ApplicationCommandOptionType.User,
       name: 'гражданин',
-      description: 'Гражданин, которому нужно выдать справку'
+      description: 'Гражданин, которому нужно выдать справку',
+      required: true
     })
     target: GuildMember,
     interaction: CommandInteraction
@@ -188,8 +197,15 @@ export class VaccinationCommand {
     }
 
     if (!caller.roles.cache.has(server.nurseRoleId!)) {
-      await interaction.followUp({
+      return interaction.reply({
         content: 'Вы не имеете права выдавать справки гражданам',
+        ephemeral: true
+      })
+    }
+
+    if (target.user.bot) {
+      return interaction.reply({
+        content: 'Вы не можете выдать справку боту',
         ephemeral: true
       })
     }
@@ -224,8 +240,12 @@ export class VaccinationCommand {
 
     const image = await getVaccinationCertificate({
       id: citizen.id,
+      isDead: citizen.status === CitizenStatus.Dead,
       username: target.displayName,
-      avatarUrl: target.displayAvatarURL()
+      avatarUrl: target.displayAvatarURL({
+        extension: 'png',
+        size: 4096
+      })
     })
 
     const file = new AttachmentBuilder(image, {

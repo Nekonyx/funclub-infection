@@ -23,32 +23,37 @@ export class SetupCommand {
     @SlashOption({
       type: ApplicationCommandOptionType.Role,
       name: 'infected',
-      description: 'Роль инфицированного'
+      description: 'Роль инфицированного',
+      required: true
     })
     infectedRole: Role,
     @SlashOption({
       type: ApplicationCommandOptionType.Role,
       name: 'quarantined',
-      description: 'Роль изолированного'
+      description: 'Роль изолированного',
+      required: true
     })
     quarantineRole: Role,
     @SlashOption({
       type: ApplicationCommandOptionType.Role,
       name: 'nurse',
-      description: 'Роль врача'
+      description: 'Роль врача',
+      required: true
     })
     nurseRole: Role,
     @SlashOption({
       type: ApplicationCommandOptionType.Role,
       name: 'dead',
-      description: 'Роль умершего'
+      description: 'Роль умершего',
+      required: true
     })
     deadRole: Role,
     @SlashOption({
       type: ApplicationCommandOptionType.Channel,
       channelTypes: [ChannelType.GuildText],
       name: 'quarantine',
-      description: 'Канал карантина'
+      description: 'Канал карантина',
+      required: true
     })
     quarantineChannel: TextChannel,
     interaction: CommandInteraction
@@ -64,7 +69,6 @@ export class SetupCommand {
     await this.serverService.update({
       id: server.id,
       data: {
-        isActive: true,
         infectedRoleId: infectedRole.id,
         nurseRoleId: nurseRole.id,
         deadRoleId: deadRole.id,

@@ -19,6 +19,7 @@
     "musicard": "^1.5.2",
     "reflect-metadata": "^0.1.13",
     "snowyflake": "^2.0.0",
+    "sqlite3": "^5.1.6",
     "typeorm": "^0.3.17"
   },
   "devDependencies": {

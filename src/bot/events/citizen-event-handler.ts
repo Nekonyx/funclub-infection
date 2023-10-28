@@ -71,7 +71,10 @@ export class CitizenEventsHandler {
 
     const member = await guild.members.fetch(citizen.userId)
 
-    await member.roles.remove([server.deadRoleId!, server.infectedRoleId!])
+    await member.roles.remove([
+      server.infectedRoleId!,
+      server.quarantineRoleId!
+    ])
 
     if (notify) {
       await this.sendNotification(

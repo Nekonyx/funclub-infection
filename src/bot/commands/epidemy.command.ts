@@ -10,7 +10,8 @@ import {
 } from 'discord.js'
 import { ButtonComponent, Discord, Slash } from 'discordx'
 
-import { Color, VIRUS_NAME } from '../../constants'
+import { CitizenStatus, Color, VIRUS_NAME } from '../../constants'
+import { Citizen } from '../../db'
 import { CitizenService } from '../../services/citizen.service'
 import { ServerService } from '../../services/server.service'
 
@@ -22,49 +23,7 @@ export class EpidemyCommand {
   private readonly citizenService = new CitizenService()
 
   @Slash({
-    name: 'статус-эпидемии',
-    description: 'Возвращает статус эпидемии'
-  })
-  public async status(command: CommandInteraction) {
-    const server = await this.serverService.getOne({
-      guildId: command.guildId!
-    })
-
-    if (!server || !server.isActive) {
-      throw new Error('Server not found or inactive')
-    }
-
-    // prettier-ignore
-    const embed = new EmbedBuilder()
-      .setTitle('Статус эпидемии')
-      .setColor(Color.Green)
-      .setFields([{
-        name: 'Текущее состояние',
-        value: '🟢 Стабильное'
-      }])
-      .setDescription(stripIndent`
-        **${VIRUS_NAME}** — оболочечный одноцепочный РНК-вирус. Создан в лаборатории Кобрастанской биотехнологической компании "Nekobiotics" в 2019 году и в качестве биологического оружия.
-
-        Впервые выявлен в ноябре 2023 года и вызывает одноимённое опасное инфекционное заболевание.
-      `)
-
-    if (server.isEpidemic) {
-      // prettier-ignore
-      embed
-        .setColor(Color.Red)
-        .setFields([{
-          name: 'Текущее состояние',
-          value: '🔴 Эпидемия'
-        }])
-    }
-
-    await command.reply({
-      embeds: [embed]
-    })
-  }
-
-  @Slash({
-    name: 'начать-эпидемию',
+    name: 'эпидемия',
     description: 'Большинство граждан мгновенно заразятся вирусом',
     defaultMemberPermissions: [PermissionsBitField.Flags.Administrator]
   })
@@ -143,17 +102,25 @@ export class EpidemyCommand {
       serverId: server.id
     })
 
-    // Перемешиваем граждан и берём 10%
-    const shuffledCitizens = citizens.sort(() => Math.random() - 0.5)
-    const citizensToInfect = shuffledCitizens.slice(
+    // Перемешиваем граждан и берём 1%
+    const shuffledCitizens: Citizen[] = citizens.sort(() => Math.random() - 0.5)
+    const citizensToInfect: Citizen[] = shuffledCitizens.slice(
       0,
-      Math.floor(citizens.length * 0.1)
+      Math.floor(citizens.length * 0.01)
     )
 
+    // Такое бывает только во время теста, когда на сервере людей меньше 100
+    // поэтому докидываем случайного одного
+    if (citizensToInfect.length === 0) {
+      citizensToInfect.push(shuffledCitizens[0])
+    }
+
     await Promise.all(
-      citizensToInfect.map((citizen) =>
-        this.citizenService.markInfected(citizen, false)
-      )
+      citizensToInfect.map((citizen) => {
+        if (citizen.status === CitizenStatus.Healthy) {
+          return this.citizenService.markInfected(citizen, false)
+        }
+      })
     )
 
     // prettier-ignore

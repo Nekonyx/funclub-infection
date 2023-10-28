@@ -74,11 +74,21 @@ export class MemberWatcher {
     const server = await this.getServerOfMember(next)
     const citizen = await this.citizenService.getOne({
       userId: next.id,
-      serverId: server.id
+      serverId: server.id,
+      opts: {
+        relations: {
+          vaccinations: true
+        }
+      }
     })
 
     if (!citizen) {
       throw new Error('Citizen not found')
+    }
+
+    // Если гражданин уже вакцинирован, то не менять его статус
+    if (citizen.vaccinations.length >= 2) {
+      return
     }
 
     await this.citizenService.updateImmuneStatus(

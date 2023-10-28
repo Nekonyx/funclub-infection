@@ -49,8 +49,12 @@ bot.once('ready', async () => {
             : await guild.members.fetch()
 
         console.log(`guild ${guild.name} has ${members.size} members`)
-        return members.map((member) =>
-          citizenService.getOrCreateOne({
+        return members.map((member) => {
+          if (member.user.bot) {
+            return
+          }
+
+          return citizenService.getOrCreateOne({
             userId: member.id,
             serverId: server.id,
             creationParams: {
@@ -58,7 +62,7 @@ bot.once('ready', async () => {
               serverId: server.id
             }
           })
-        )
+        })
       })
     )
   }

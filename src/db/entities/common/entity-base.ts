@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
+  PrimaryColumn,
   UpdateDateColumn
 } from 'typeorm'
 
@@ -12,23 +13,21 @@ import { getSnowflake } from '../../utils'
  * Provides common properties such as id, createdAt, updatedAt, and deletedAt.
  */
 export abstract class EntityBase {
-  @Column({
-    type: 'varchar'
-  })
+  @PrimaryColumn('varchar')
   public id: string = getSnowflake()
 
   @CreateDateColumn({
-    type: 'timestamptz'
+    type: 'datetime'
   })
   public createdAt = new Date()
 
   @UpdateDateColumn({
-    type: 'timestamptz'
+    type: 'datetime'
   })
   public updatedAt = new Date()
 
   @DeleteDateColumn({
-    type: 'timestamptz'
+    type: 'datetime'
   })
   public deletedAt?: Date
 }
