@@ -18,8 +18,8 @@ export class Jobs {
     this.onDeadline = this.onDeadline.bind(this)
 
     this.jobs.push(
-      new CronJob('* * * * *', this.onDrugsRefill, null, null, 'Europe/Moscow'),
-      new CronJob('* * * * *', this.onDeadline, null, null, 'Europe/Moscow')
+      new CronJob('0 * * * *', this.onDrugsRefill, null, null, 'Europe/Moscow'),
+      new CronJob('0 * * * *', this.onDeadline, null, null, 'Europe/Moscow')
     )
   }
 
