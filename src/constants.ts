@@ -68,7 +68,7 @@ export const DEATH_TIME = 86400 * 1.5 * 1000
  * Время между вакцинациями.
  * По умолчанию 12 часов
  */
-export const VACCINATION_TIME = 86400 / 1 * 1000
+export const VACCINATION_TIME = 86400 / 2 * 1000
 
 /** Флаг страны */
 export const CountryFlag: Record<Country, string> = {
