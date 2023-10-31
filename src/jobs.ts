@@ -21,14 +21,14 @@ export class Jobs {
     //   new CronJob('0 * * * *', this.onDrugsRefill, null, null, 'Europe/Moscow'),
     //   new CronJob('0 * * * *', this.onDeadline, null, null, 'Europe/Moscow')
     // )
-
-    this.onDeadline()
   }
 
   public init() {
     for (const job of this.jobs) {
       job.start()
     }
+
+    this.onDeadline()
   }
 
   private async onDrugsRefill() {
