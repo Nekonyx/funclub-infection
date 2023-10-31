@@ -64,7 +64,6 @@ export class Jobs {
 
     for (const server of servers) {
       try {
-        const guild = await bot.guilds.fetch(server.guildId)
         const citizens = await this.citizenService.getList({
           serverId: server.id,
           status: CitizenStatus.Infected,
@@ -76,12 +75,7 @@ export class Jobs {
         })
 
         for (const citizen of citizens) {
-          const member = guild.members.cache.get(citizen.userId)
-
-          if (!member) {
-            continue
-          }
-
+          console.log(`- ${citizen.userId} has ${citizen.vaccinations.length} vaccines`)
           // Если вакцинирован, то выживает, если нет, то убиваем
           if (citizen.vaccinations.length >= 2) {
             this.citizenService.markRecovered(citizen, true)
