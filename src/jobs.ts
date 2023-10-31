@@ -82,14 +82,6 @@ export class Jobs {
             continue
           }
 
-          const isQuarantined = member.roles.cache.has(server.quarantineRoleId!)
-          const deadline = isQuarantined ? QUARANTIME_TIME : DEATH_TIME
-
-          // Есть ещё время для жизни
-          if (Date.now() < citizen.infectionDate!.getTime() + deadline) {
-            continue
-          }
-
           // Если вакцинирован, то выживает, если нет, то убиваем
           if (citizen.vaccinations.length >= 2) {
             this.citizenService.markRecovered(citizen, true)
