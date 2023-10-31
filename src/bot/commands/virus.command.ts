@@ -60,7 +60,7 @@ export class VirusCommand {
       .setColor(Color.Green)
       .setFields([{
         name: 'Текущее состояние',
-        value: '🟢 Стабильное'
+        value: '❤️ Вирус уничтожен'
       }])
       .setDescription(stripIndent`
         **${VIRUS_NAME}** — оболочечный одноцепочный РНК-вирус. Создан в лаборатории Ханты-Мансийской биотехнологической компании "Jaba Biotics" в 2019 году и в качестве биологического оружия.
@@ -74,7 +74,7 @@ export class VirusCommand {
         .setColor(Color.Red)
         .setFields([{
           name: 'Текущее состояние',
-          value: '🔴 Эпидемия'
+          value: '❤️ Вирус уничтожен'
         }])
     }
 
@@ -187,7 +187,7 @@ export class VirusCommand {
   private getTotalStats(citizens: Citizen[]): TotalStats {
     const date = formatDate(new Date())
 
-    return {
+    const stats: TotalStats = {
       // Всего популяции
       totalCitizen: citizens.length,
       // Заболевания
@@ -214,6 +214,10 @@ export class VirusCommand {
           formatDate(c.recoveryDate!) === date
       ).length
     }
+
+    stats.infectTotal += stats.deathTotal + stats.recoverTotal
+
+    return stats
   }
 }
 

@@ -18,22 +18,6 @@ export class DrugsEventHandlers {
   }
 
   private async onRefill(server: Server) {
-    const guild = await bot.guilds.fetch(server.guildId)
-    const channel = await guild.channels.fetch(server.quarantineChannelId!)
-
-    if (!channel?.isTextBased()) {
-      throw new Error('Channel not found or not text based')
-    }
-
-    await channel.send({
-      content: `<@&${server.nurseRoleId}>`,
-      embeds: [
-        new EmbedBuilder({
-          title: 'Пополнение инвентаря',
-          color: Color.Blue,
-          description: `Поступил препарат от ${VIRUS_NAME}. В инвентаре теперь их ${server.drugsCount} шт.`
-        })
-      ]
-    })
+    return
   }
 }

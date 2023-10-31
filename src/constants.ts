@@ -56,19 +56,19 @@ export const COUGH_MESSAGE: string[] = [
  * Время до смерти в карантине в миллисекундах.
  * По умолчанию 3 дня.
  */
-export const QUARANTIME_TIME = 86400 * 3 * 1000
+export const QUARANTIME_TIME = 1000
 
 /**
  * Время до смерти вне карантина в миллисекундах.
  * По умолчанию 1.5 дня.
  */
-export const DEATH_TIME = 86400 * 1.5 * 1000
+export const DEATH_TIME = 1000
 
 /**
  * Время между вакцинациями.
  * По умолчанию 12 часов
  */
-export const VACCINATION_TIME = 86400 / 2 * 1000
+export const VACCINATION_TIME = 86400 / 100 * 1000
 
 /** Флаг страны */
 export const CountryFlag: Record<Country, string> = {
