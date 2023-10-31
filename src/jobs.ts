@@ -17,10 +17,12 @@ export class Jobs {
     this.onDrugsRefill = this.onDrugsRefill.bind(this)
     this.onDeadline = this.onDeadline.bind(this)
 
-    this.jobs.push(
-      new CronJob('0 * * * *', this.onDrugsRefill, null, null, 'Europe/Moscow'),
-      new CronJob('0 * * * *', this.onDeadline, null, null, 'Europe/Moscow')
-    )
+    // this.jobs.push(
+    //   new CronJob('0 * * * *', this.onDrugsRefill, null, null, 'Europe/Moscow'),
+    //   new CronJob('0 * * * *', this.onDeadline, null, null, 'Europe/Moscow')
+    // )
+
+    this.onDeadline()
   }
 
   public init() {
